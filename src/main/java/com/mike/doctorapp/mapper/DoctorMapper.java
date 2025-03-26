@@ -5,8 +5,9 @@ import com.mike.doctorapp.dto.doctor.DoctorResponse;
 import com.mike.doctorapp.entity.Doctor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public interface DoctorMapper {
     DoctorResponse toResponse(Doctor doctor);
 
@@ -15,5 +16,10 @@ public interface DoctorMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "appointments", ignore = true)
+    @Mapping(target = "firstName", source = "firstName")
+    @Mapping(target = "lastName", source = "lastName")
+    @Mapping(target = "specialization", source = "specialization")
+    @Mapping(target = "phone", source = "phone")
+    @Mapping(target = "email", source = "email")
     Doctor toEntity(DoctorCreateRequest request);
 }

@@ -4,4 +4,136 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
+    <!-- Insert test users -->
+    <changeSet id="005-insert-users" author="mike">
+        <insert tableName="users">
+            <column name="id" valueNumeric="1"/>
+            <column name="username" value="user1"/>
+            <column name="password" value="pass1"/>
+            <column name="email" value="user1@example.com"/>
+            <column name="active" valueBoolean="true"/>
+            <column name="role" value="PATIENT"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="2"/>
+            <column name="username" value="user2"/>
+            <column name="password" value="pass2"/>
+            <column name="email" value="user2@example.com"/>
+            <column name="active" valueBoolean="true"/>
+            <column name="role" value="PATIENT"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="3"/>
+            <column name="username" value="user3"/>
+            <column name="password" value="pass3"/>
+            <column name="email" value="user3@example.com"/>
+            <column name="active" valueBoolean="true"/>
+            <column name="role" value="DOCTOR"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="4"/>
+            <column name="username" value="user4"/>
+            <column name="password" value="pass4"/>
+            <column name="email" value="user4@example.com"/>
+            <column name="active" valueBoolean="true"/>
+            <column name="role" value="DOCTOR"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueNumeric="5"/>
+            <column name="username" value="user5"/>
+            <column name="password" value="pass5"/>
+            <column name="email" value="user5@example.com"/>
+            <column name="active" valueBoolean="true"/>
+            <column name="role" value="PATIENT"/>
+        </insert>
+    </changeSet>
+
+    <!-- Insert test doctors -->
+    <changeSet id="006-insert-doctors" author="mike">
+        <insert tableName="doctors">
+            <column name="id" valueNumeric="1"/>
+            <column name="first_name" value="Alice"/>
+            <column name="last_name" value="Smith"/>
+            <column name="specialization" value="Cardiology"/>
+            <column name="phone" value="1234567890"/>
+            <column name="email" value="alice@hospital.com"/>
+            <column name="created_at" valueDate="NOW()"/>
+            <column name="updated_at" value="NULL"/>
+            <column name="user_id" valueNumeric="3"/>
+        </insert>
+        <insert tableName="doctors">
+            <column name="id" valueNumeric="2"/>
+            <column name="first_name" value="Bob"/>
+            <column name="last_name" value="Brown"/>
+            <column name="specialization" value="Neurology"/>
+            <column name="phone" value="0987654321"/>
+            <column name="email" value="bob@hospital.com"/>
+            <column name="created_at" valueDate="NOW()"/>
+            <column name="updated_at" value="NULL"/>
+            <column name="user_id" valueNumeric="4"/>
+        </insert>
+    </changeSet>
+
+    <!-- Insert test patients -->
+    <changeSet id="007-insert-patients" author="mike">
+        <insert tableName="patients">
+            <column name="id" valueNumeric="1"/>
+            <column name="first_name" value="John"/>
+            <column name="last_name" value="Doe"/>
+            <column name="date_of_birth" valueDate="1990-01-01"/>
+            <column name="gender" value="Male"/>
+            <column name="phone" value="5551234567"/>
+            <column name="address" value="123 Main St"/>
+            <column name="user_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="patients">
+            <column name="id" valueNumeric="2"/>
+            <column name="first_name" value="Jane"/>
+            <column name="last_name" value="Roe"/>
+            <column name="date_of_birth" valueDate="1985-05-15"/>
+            <column name="gender" value="Female"/>
+            <column name="phone" value="5559876543"/>
+            <column name="address" value="456 Elm St"/>
+            <column name="user_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="patients">
+            <column name="id" valueNumeric="3"/>
+            <column name="first_name" value="Tim"/>
+            <column name="last_name" value="Lee"/>
+            <column name="date_of_birth" valueDate="1978-11-23"/>
+            <column name="gender" value="Male"/>
+            <column name="phone" value="5556781234"/>
+            <column name="address" value="789 Pine St"/>
+            <column name="user_id" valueNumeric="5"/>
+        </insert>
+    </changeSet>
+
+    <!-- Insert test appointments -->
+    <changeSet id="008-insert-appointments" author="mike">
+        <insert tableName="appointments">
+            <column name="appointment_date" valueDate="2025-04-01T09:00:00"/>
+            <column name="reason" value="Check-up"/>
+            <column name="created_at" valueDate="NOW()"/>
+            <column name="updated_at" value="NULL"/>
+            <column name="doctor_id" valueNumeric="1"/>
+            <column name="patient_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="appointments">
+            <column name="appointment_date" valueDate="2025-04-02T10:30:00"/>
+            <column name="reason" value="Follow-up"/>
+            <column name="created_at" valueDate="NOW()"/>
+            <column name="updated_at" value="NULL"/>
+            <column name="doctor_id" valueNumeric="1"/>
+            <column name="patient_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="appointments">
+            <column name="appointment_date" valueDate="2025-04-03T14:00:00"/>
+            <column name="reason" value="Consultation"/>
+            <column name="created_at" valueDate="NOW()"/>
+            <column name="updated_at" value="NULL"/>
+            <column name="doctor_id" valueNumeric="2"/>
+            <column name="patient_id" valueNumeric="3"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>
