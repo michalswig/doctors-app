@@ -2,6 +2,7 @@ package com.mike.doctorapp.controller;
 
 import com.mike.doctorapp.dto.appointment.AppointmentFilter;
 import com.mike.doctorapp.dto.appointment.AppointmentResponse;
+import com.mike.doctorapp.dto.appointment.UpdateAppointmentStatusRequest;
 import com.mike.doctorapp.mapper.AppointmentMapper;
 import com.mike.doctorapp.service.AppointmentService;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -42,13 +43,14 @@ public class AppointmentController {
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<Void> updateAppointmentStatus(
+    public ResponseEntity<Void> updateStatus(
             @PathVariable Long id,
-            @RequestBody AppointmentFilter request
+            @RequestBody UpdateAppointmentStatusRequest request
     ) {
         appointmentService.updateAppointmentStatus(id, request.getStatus().name());
         return ResponseEntity.noContent().build();
     }
+
 
 
 
