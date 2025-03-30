@@ -5,7 +5,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <!-- Insert test users -->
-    <changeSet id="005-insert-users" author="mike">
+    <changeSet id="006-insert-users" author="mike">
         <insert tableName="users">
             <column name="id" valueNumeric="1"/>
             <column name="username" value="user1"/>
@@ -49,7 +49,7 @@
     </changeSet>
 
     <!-- Insert test doctors -->
-    <changeSet id="006-insert-doctors" author="mike">
+    <changeSet id="007-insert-doctors" author="mike">
         <insert tableName="doctors">
             <column name="id" valueNumeric="1"/>
             <column name="first_name" value="Alice"/>
@@ -75,7 +75,7 @@
     </changeSet>
 
     <!-- Insert test patients -->
-    <changeSet id="007-insert-patients" author="mike">
+    <changeSet id="008-insert-patients" author="mike">
         <insert tableName="patients">
             <column name="id" valueNumeric="1"/>
             <column name="first_name" value="John"/>
@@ -112,7 +112,7 @@
     <changeSet id="008-insert-appointments" author="mike">
         <insert tableName="appointments">
             <column name="appointment_date" valueDate="2025-04-01T09:00:00"/>
-            <column name="reason" value="Check-up"/>
+            <column name="status" value="APPOINTMENT_SCHEDULED"/>
             <column name="created_at" valueDate="NOW()"/>
             <column name="updated_at" value="NULL"/>
             <column name="doctor_id" valueNumeric="1"/>
@@ -120,7 +120,7 @@
         </insert>
         <insert tableName="appointments">
             <column name="appointment_date" valueDate="2025-04-02T10:30:00"/>
-            <column name="reason" value="Follow-up"/>
+            <column name="status" value="APPOINTMENT_SCHEDULED"/>
             <column name="created_at" valueDate="NOW()"/>
             <column name="updated_at" value="NULL"/>
             <column name="doctor_id" valueNumeric="1"/>
@@ -128,11 +128,23 @@
         </insert>
         <insert tableName="appointments">
             <column name="appointment_date" valueDate="2025-04-03T14:00:00"/>
-            <column name="reason" value="Consultation"/>
+            <column name="status" value="APPOINTMENT_SCHEDULED"/>
             <column name="created_at" valueDate="NOW()"/>
             <column name="updated_at" value="NULL"/>
             <column name="doctor_id" valueNumeric="2"/>
             <column name="patient_id" valueNumeric="3"/>
+        </insert>
+    </changeSet>
+
+    <!-- Insert test appointments -->
+    <changeSet id="009-insert-past-appointment" author="mike">
+        <insert tableName="appointments">
+            <column name="appointment_date" valueDate="2023-04-01T09:00:00"/>
+            <column name="status" value=" APPOINTMENT_COMPLETED"/>
+            <column name="created_at" valueDate="NOW()"/>
+            <column name="updated_at" value="NULL"/>
+            <column name="doctor_id" valueNumeric="1"/>
+            <column name="patient_id" valueNumeric="1"/>
         </insert>
     </changeSet>
 

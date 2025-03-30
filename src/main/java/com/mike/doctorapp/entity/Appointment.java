@@ -1,5 +1,6 @@
 package com.mike.doctorapp.entity;
 
+import com.mike.doctorapp.enums.AppointmentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,7 +22,8 @@ public class Appointment {
     @Column(name = "appointment_date")
     private LocalDateTime appointmentDate;
 
-    private String reason;
+    @Enumerated(EnumType.STRING)
+    private AppointmentStatus status;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

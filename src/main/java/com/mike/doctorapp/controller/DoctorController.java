@@ -27,4 +27,6 @@ public class DoctorController {
         return ResponseEntity.ok(doctorMapper.toResponse(doctor));
     }
 
+
+
 }

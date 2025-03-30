@@ -1,7 +1,14 @@
 package com.mike.doctorapp.dto.doctor;
 
+import lombok.*;
+
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class DoctorResponse {
     private Long id;
     private String firstName;

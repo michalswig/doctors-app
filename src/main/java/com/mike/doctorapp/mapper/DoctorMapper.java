@@ -9,6 +9,8 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public interface DoctorMapper {
+
+    @Mapping(target = "userId", source = "user.id")
     DoctorResponse toResponse(Doctor doctor);
 
     @Mapping(target = "id", ignore = true)
