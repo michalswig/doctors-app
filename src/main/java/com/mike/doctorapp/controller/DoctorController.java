@@ -1,14 +1,14 @@
 package com.mike.doctorapp.controller;
 
+import com.mike.doctorapp.dto.doctor.DoctorFilter;
 import com.mike.doctorapp.dto.doctor.DoctorResponse;
 import com.mike.doctorapp.entity.Doctor;
 import com.mike.doctorapp.mapper.DoctorMapper;
 import com.mike.doctorapp.service.DoctorService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/doctors")
@@ -27,6 +27,17 @@ public class DoctorController {
         return ResponseEntity.ok(doctorMapper.toResponse(doctor));
     }
 
+    @GetMapping
+    public ResponseEntity<List<DoctorResponse>> getDoctorsByFilter(@RequestParam(required = false) String specialization) {
 
+        DoctorFilter filter = DoctorFilter.builder()
+                .specialization(specialization)
+                .build();
+
+        List<Doctor> doctors = doctorService.getDoctorsByFilter(filter);
+        return ResponseEntity.ok(doctors.stream()
+                .map(doctorMapper::toResponse)
+                .toList());
+    }
 
 }
