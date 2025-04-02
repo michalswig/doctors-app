@@ -148,4 +148,16 @@
         </insert>
     </changeSet>
 
+    <changeSet id="010-fix-gender-values" author="mike">
+        <update tableName="patients">
+            <column name="gender" value="MALE"/>
+            <where>gender = 'Male'</where>
+        </update>
+        <update tableName="patients">
+            <column name="gender" value="FEMALE"/>
+            <where>gender = 'Female'</where>
+        </update>
+    </changeSet>
+
+
 </databaseChangeLog>

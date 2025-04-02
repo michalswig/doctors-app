@@ -21,12 +21,6 @@ public class DoctorController {
         this.doctorMapper = doctorMapper;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<DoctorResponse> getDoctorById(@PathVariable Long id) {
-        Doctor doctor = doctorService.getDoctorById(id);
-        return ResponseEntity.ok(doctorMapper.toResponse(doctor));
-    }
-
     @GetMapping
     public ResponseEntity<List<DoctorResponse>> getDoctorsByFilter(@RequestParam(required = false) String specialization) {
 

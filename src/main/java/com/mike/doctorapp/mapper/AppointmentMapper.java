@@ -1,5 +1,6 @@
 package com.mike.doctorapp.mapper;
 
+import com.mike.doctorapp.dto.appointment.AppointmentCreateRequest;
 import com.mike.doctorapp.dto.appointment.AppointmentResponse;
 import com.mike.doctorapp.entity.Appointment;
 import com.mike.doctorapp.entity.Doctor;
@@ -15,10 +16,14 @@ public interface AppointmentMapper {
     @Mapping(source = "patient.id", target = "patientId")
     AppointmentResponse toResponse(Appointment appointment);
 
-    @Mapping(target = "doctor", expression = "java(mapDoctor(response.getDoctorId()))")
-    @Mapping(target = "patient", expression = "java(mapPatient(response.getPatientId()))")
-    @Mapping(source = "status", target = "status")
-    Appointment toEntity(AppointmentResponse response);
+    @Mapping(target = "doctor.id", source = "doctorId")
+    @Mapping(target = "patient.id", source = "patientId")
+    @Mapping(source = "appointmentDate", target = "appointmentDate")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    Appointment toEntity(AppointmentCreateRequest request);
 
     default Doctor mapDoctor(Long id) {
         if (id == null) return null;
