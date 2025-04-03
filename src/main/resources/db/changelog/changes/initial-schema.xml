@@ -159,5 +159,35 @@
         </update>
     </changeSet>
 
+    <changeSet id="011-fix-doctor-fk" author="mike">
+        <dropForeignKeyConstraint
+                baseTableName="appointments"
+                constraintName="fk_appointment_doctor"/>
+
+        <addForeignKeyConstraint
+                baseTableName="appointments"
+                baseColumnNames="doctor_id"
+                referencedTableName="doctors"
+                referencedColumnNames="id"
+                constraintName="fk_appointment_doctor"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="012-recreate-fk-doctor-cascade" author="mike">
+        <dropForeignKeyConstraint
+                baseTableName="appointments"
+                constraintName="fk_appointment_doctor"/>
+
+        <addForeignKeyConstraint
+                baseTableName="appointments"
+                baseColumnNames="doctor_id"
+                referencedTableName="doctors"
+                referencedColumnNames="id"
+                constraintName="fk_appointment_doctor"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+
+
 
 </databaseChangeLog>

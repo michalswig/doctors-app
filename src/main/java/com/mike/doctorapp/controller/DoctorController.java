@@ -1,10 +1,12 @@
 package com.mike.doctorapp.controller;
 
+import com.mike.doctorapp.dto.doctor.DoctorCreateRequest;
 import com.mike.doctorapp.dto.doctor.DoctorFilter;
 import com.mike.doctorapp.dto.doctor.DoctorResponse;
 import com.mike.doctorapp.entity.Doctor;
 import com.mike.doctorapp.mapper.DoctorMapper;
 import com.mike.doctorapp.service.DoctorService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +34,18 @@ public class DoctorController {
         return ResponseEntity.ok(doctors.stream()
                 .map(doctorMapper::toResponse)
                 .toList());
+    }
+
+    @PostMapping
+    public ResponseEntity<DoctorResponse> createDoctor(@RequestBody DoctorCreateRequest request) {
+        DoctorResponse savedDoctor = doctorService.createDoctor(request);
+        return new ResponseEntity<>(savedDoctor, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<DoctorResponse> deleteDoctor(@PathVariable Long id) {
+        doctorService.deleteDoctorById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

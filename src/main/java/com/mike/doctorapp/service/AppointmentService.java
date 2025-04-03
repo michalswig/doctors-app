@@ -13,6 +13,7 @@ import com.mike.doctorapp.repository.DoctorRepository;
 import com.mike.doctorapp.repository.PatientRepository;
 import com.mike.doctorapp.repository.specification.appointment.AppointmentSpecificationBuilder;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,7 @@ public class AppointmentService {
         return appointmentRepository.findAll(specification);
     }
 
+    @Transactional
     public void updateAppointmentStatus(Long appointmentId, String newStatus) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new EntityNotFoundException("Appointment not found"));
@@ -49,6 +51,7 @@ public class AppointmentService {
         appointmentRepository.save(appointment);
     }
 
+    @Transactional
     public AppointmentResponse createAppointment(AppointmentCreateRequest request) {
         ifAppointmentDateIsValid(request);
         Doctor doctor = getDoctor(request);
