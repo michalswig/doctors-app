@@ -187,6 +187,18 @@
                 onDelete="CASCADE"/>
     </changeSet>
 
+    <changeSet id="013-insert-test-user" author="you">
+        <insert tableName="users">
+            <column name="id" valueNumeric="6"/>
+            <column name="username" value="user6"/>
+            <column name="password" value="$2a$08$aGSozdBPQ9TkHaj53zBmN.UxOSgBscC5ayyev8USbZ/52FC6Dznfe"/>
+            <column name="email" value="user6@example.com"/>
+            <column name="active" valueBoolean="true"/>
+            <column name="role" value="PATIENT"/>
+        </insert>
+    </changeSet>
+
+
 
 
 
