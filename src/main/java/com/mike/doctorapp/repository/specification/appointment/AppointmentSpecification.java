@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Objects;
 
-public class AppointmentSpecificationBuilder {
+public class AppointmentSpecification {
 
     public static Specification<Appointment> build(AppointmentFilter filter) {
         Specification<Appointment> specification = Specification.where(null);

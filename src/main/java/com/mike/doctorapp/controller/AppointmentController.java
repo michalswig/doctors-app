@@ -19,11 +19,9 @@ import java.util.List;
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
-    private final AppointmentMapper appointmentMapper;
 
-    public AppointmentController(AppointmentService appointmentService, AppointmentMapper appointmentMapper) {
+    public AppointmentController(AppointmentService appointmentService) {
         this.appointmentService = appointmentService;
-        this.appointmentMapper = appointmentMapper;
     }
 
     @GetMapping("/doctor/{doctorId}")
@@ -31,15 +29,9 @@ public class AppointmentController {
             @PathVariable Long doctorId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate
     ) {
+        List<AppointmentResponse> response = appointmentService
+                .getAppointmentsByDoctorAndStartDate(doctorId, startDate);
 
-        AppointmentFilter filter = AppointmentFilter.builder()
-                .doctorId(doctorId)
-                .appointmentDate(startDate)
-                .build();
-
-        List<AppointmentResponse> response = appointmentService.getAppointmentsByFilter(filter).stream()
-                .map(appointmentMapper::toResponse)
-                .toList();
         return ResponseEntity.ok(response);
     }
 
@@ -58,6 +50,5 @@ public class AppointmentController {
     ) {
         return ResponseEntity.ok(appointmentService.createAppointment(request));
     }
-
 
 }

@@ -8,52 +8,52 @@ import com.mike.doctorapp.entity.User;
 import com.mike.doctorapp.mapper.DoctorMapper;
 import com.mike.doctorapp.repository.DoctorRepository;
 import com.mike.doctorapp.repository.UserRepository;
-import com.mike.doctorapp.repository.specification.doctor.DoctorSpecificationBuilder;
+import com.mike.doctorapp.repository.specification.doctor.DoctorSpecification;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class DoctorService {
     private final DoctorRepository doctorRepository;
     private final UserRepository userRepository;
     private final DoctorMapper doctorMapper;
+    private final Clock clock;
 
-    public DoctorService(DoctorRepository doctorRepository, UserRepository userRepository, DoctorMapper doctorMapper) {
-        this.doctorRepository = doctorRepository;
-        this.userRepository = userRepository;
-        this.doctorMapper = doctorMapper;
-    }
+    public List<DoctorResponse> getDoctorsBySpecialization(String specialization) {
+        DoctorFilter filter = DoctorFilter.builder()
+                .specialization(specialization)
+                .build();
 
-    public Doctor getDoctorById(Long doctorId) {
-        return doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new RuntimeException("Doctor with ID " + doctorId + " not found."));
-    }
+        Specification<Doctor> specification = DoctorSpecification.build(filter);
 
-    public List<Doctor> getDoctorsByFilter(DoctorFilter filter) {
-        Specification<Doctor> specification = DoctorSpecificationBuilder.build(filter);
-        return doctorRepository.findAll(specification);
+        return doctorRepository.findAll(specification).stream()
+                .map(doctorMapper::toResponse)
+                .toList();
     }
 
     @Transactional
     public DoctorResponse createDoctor(DoctorCreateRequest request) {
         User user = userRepository.findById(request.getUserId()).orElseThrow(
-                () -> new RuntimeException("User with ID " + request.getUserId() + " not found.")
+                () -> new EntityNotFoundException("User with ID " + request.getUserId() + " not found.")
         );
         Doctor doctor = doctorMapper.toEntity(request);
         doctor.setUser(user);
-        doctor.setCreatedAt(LocalDateTime.now());
+        doctor.setCreatedAt(LocalDateTime.now(clock));
         return doctorMapper.toResponse(doctorRepository.save(doctor));
     }
 
     @Transactional
     public void deleteDoctorById(Long doctorId) {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(
-                () -> new RuntimeException("Doctor with ID " + doctorId + " not found.")
+                () -> new EntityNotFoundException("Doctor with ID " + doctorId + " not found.")
         );
         doctor.getAppointments().clear();
         doctorRepository.delete(doctor);

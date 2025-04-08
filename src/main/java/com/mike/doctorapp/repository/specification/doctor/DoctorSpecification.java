@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Objects;
 
-public class DoctorSpecificationBuilder {
+public class DoctorSpecification {
 
     public static Specification<Doctor> build(DoctorFilter filter) {
         Specification<Doctor> specification = Specification.where(null);

@@ -25,15 +25,8 @@ public class DoctorController {
 
     @GetMapping
     public ResponseEntity<List<DoctorResponse>> getDoctorsByFilter(@RequestParam(required = false) String specialization) {
-
-        DoctorFilter filter = DoctorFilter.builder()
-                .specialization(specialization)
-                .build();
-
-        List<Doctor> doctors = doctorService.getDoctorsByFilter(filter);
-        return ResponseEntity.ok(doctors.stream()
-                .map(doctorMapper::toResponse)
-                .toList());
+        List<DoctorResponse> doctors = doctorService.getDoctorsBySpecialization(specialization);
+        return ResponseEntity.ok(doctors);
     }
 
     @PostMapping

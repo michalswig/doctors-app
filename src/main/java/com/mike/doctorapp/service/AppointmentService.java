@@ -11,33 +11,38 @@ import com.mike.doctorapp.mapper.AppointmentMapper;
 import com.mike.doctorapp.repository.AppointmentRepository;
 import com.mike.doctorapp.repository.DoctorRepository;
 import com.mike.doctorapp.repository.PatientRepository;
-import com.mike.doctorapp.repository.specification.appointment.AppointmentSpecificationBuilder;
+import com.mike.doctorapp.repository.specification.appointment.AppointmentSpecification;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class AppointmentService {
-    public final AppointmentRepository appointmentRepository;
-    public final DoctorRepository doctorRepository;
-    public final PatientRepository patientRepository;
-    public final AppointmentMapper mapper;
+    private final AppointmentRepository appointmentRepository;
+    private final DoctorRepository doctorRepository;
+    private final PatientRepository patientRepository;
+    private final AppointmentMapper mapper;
+    private final Clock clock;
 
+    public List<AppointmentResponse> getAppointmentsByDoctorAndStartDate(Long doctorId, LocalDateTime startDate) {
 
-    public AppointmentService(AppointmentRepository appointmentRepository, DoctorRepository doctorRepository, PatientRepository patientRepository, AppointmentMapper mapper) {
-        this.appointmentRepository = appointmentRepository;
-        this.doctorRepository = doctorRepository;
-        this.patientRepository = patientRepository;
-        this.mapper = mapper;
-    }
+        AppointmentFilter filter = AppointmentFilter.builder()
+                .doctorId(doctorId)
+                .appointmentDate(startDate)
+                .build();
 
-    public List<Appointment> getAppointmentsByFilter(AppointmentFilter filter) {
-        Specification<Appointment> specification = AppointmentSpecificationBuilder.build(filter);
-        return appointmentRepository.findAll(specification);
+        Specification<Appointment> specification = AppointmentSpecification.build(filter);
+
+        return appointmentRepository.findAll(specification).stream()
+                .map(mapper::toResponse)
+                .toList();
     }
 
     @Transactional
@@ -46,7 +51,7 @@ public class AppointmentService {
                 .orElseThrow(() -> new EntityNotFoundException("Appointment not found"));
 
         appointment.setStatus(AppointmentStatus.valueOf(newStatus.toUpperCase()));
-        appointment.setUpdatedAt(LocalDateTime.now());
+        appointment.setUpdatedAt(LocalDateTime.now(clock));
 
         appointmentRepository.save(appointment);
     }
@@ -62,13 +67,14 @@ public class AppointmentService {
         return mapper.toResponse(savedAppointment);
     }
 
-    private static void ifAppointmentDateIsValid(AppointmentCreateRequest request) {
-        if (request.getAppointmentDate() == null || request.getAppointmentDate().isBefore(LocalDateTime.now())) {
+    private void ifAppointmentDateIsValid(AppointmentCreateRequest request) {
+        LocalDateTime now = LocalDateTime.now(clock);
+        if (request.getAppointmentDate() == null || request.getAppointmentDate().isBefore(now)) {
             throw new IllegalArgumentException("Appointment date must be in the future.");
         }
     }
 
-    private static void setAppointmentRequest(AppointmentCreateRequest request, Appointment appointment, Doctor doctor, Patient patient) {
+    private void setAppointmentRequest(AppointmentCreateRequest request, Appointment appointment, Doctor doctor, Patient patient) {
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
         appointment.setStatus(AppointmentStatus.APPOINTMENT_SCHEDULED);
