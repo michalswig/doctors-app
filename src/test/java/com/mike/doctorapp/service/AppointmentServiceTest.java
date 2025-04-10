@@ -80,7 +80,7 @@ class AppointmentServiceTest {
         // then
         assertNotNull(result);
         assertSame(expectedResponse, result);
-        
+
         verify(appointmentRepository).save(entity);
 
         assertEquals(request.getAppointmentDate(), entity.getAppointmentDate());
