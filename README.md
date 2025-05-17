@@ -1,0 +1,1 @@
+A full-featured backend system for managing doctor appointments, designed using Java and Spring Boot. The application streamlines scheduling between patients and doctors, ensures validation of booking dates, and secures access via JWT-based authentication.
