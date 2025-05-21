@@ -79,7 +79,7 @@ public class AppointmentService {
         appointment.setPatient(patient);
         appointment.setStatus(AppointmentStatus.APPOINTMENT_SCHEDULED);
         appointment.setAppointmentDate(request.getAppointmentDate());
-        appointment.setCreatedAt(LocalDateTime.now());
+        appointment.setCreatedAt(LocalDateTime.now(clock));
     }
 
     private Patient getPatient(AppointmentCreateRequest request) {
